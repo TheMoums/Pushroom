@@ -1,3 +1,55 @@
 <resources>
     <string name="app_name">Pushroom</string>
+    <string name="custom">Customize my Wall</string>
+    <string name="takePic">New picture</string>
+    <string name="gallery">My pictures</string>
+    <string name="help">Help</string>
+    <string name="prompt">Salut</string>
+    <string name="step1">Step 1 : Create a new Wall</string>
+    <string name="step2">Step 2 : Associate your pictures</string>
+    <string name="step3">Step 3 : Get the markers</string>
+    <string name="step4">Step 4 : Finish your wall</string>
+    <string name="step5">Final step</string>
+    <string name="tuto1_text1"><u><b>1 :</b> Press on the "+" in the right corner</u></string>
+    <string name="tuto1_text2"><u><b>2 :</b> Fill the gaps and press next</u></string>
+    <string name="tuto2_text1"><u><b>1:</b> Press on the "+" next to the marker</u></string>
+    <string name="tuto2_text2"><u><b>2 :</b> Select the picture in your gallery</u></string>
+    <string name="tuto3_text1"><u><b>1 :</b> Press on the "email" button</u></string>
+    <string name="tuto3_text2"><u><b>2 :</b> Get them on your email account</u></string>
+    <string name="tuto4_text1"><u><b>1 :</b> Finalize your wall creation</u></string>
+    <string name="tuto4_text2"><u><b>2 :</b> Access to your wall anytime</u></string>
+    <string name="tuto5_text1"><u><b>1 :</b> Print your markers and place them</u></string>
+    <string name="tuto5_text2"><u><b>2 :</b> Enjoy !</u></string>
+    <string name="understood">Okay I got it !</string>
+    <string name="stupid">Restart the tutorial</string>
+    <string name="action_plus">Add</string>
+    <string name="action_photo">Take a picture</string>
+    <string name="action_help">Help</string>
+    <string name="action_done">Done</string>
+    <string name="action_email">Send markers via email</string>
+    <string name="emailErr">"The email address is not valid"</string>
+    <string name="emailBody"><u><b>Hello from WallPreview</b></u>
+        \n Here are the markers you have requested.
+        \n Thank you for using our application.
+        \n Have a great day.
+        \n <b>WallPreviewCorp CEO.</b> </string>
+    <string name="new_email_address">Enter your email address</string>
+    <string name="new_email_instruction">Send your markers by email</string>
+    <string name="new_wall_name_hint">e.g : My awesome push</string>
+    <string name="new_wall_number_hint">e.g : Kitchen</string>
+    <string name="new_wall">New Push</string>
+    <string name="new_wall_name_label">Enter the push name</string>
+    <string name="new_wall_number_label">Enter the room name</string>
+    <string name="new_wall_next_button">Next</string>
+    <string name="new_wall_instructions">You\'re about to connect a new item. Please fill in the following fields.</string>
+    <string name="new_wall_fail">Please fill the fields</string>
+    <string name="new_wall_fail2">Please enter a number of markers.</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="new_mail">Send markers by email</string>
+    <string name="wifiErr">Please turn on your wifi</string>
+    <string name="scale_factor">Scale factor</string>
+    <string name="wallChoice">"What do you want to do?"</string>
+    <string name="wallDelete">Delete</string>
+    <string name="wallDeleted">Wall deleted</string>
+    <string name="wallModify">Modify</string>
 </resources>
