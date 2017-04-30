@@ -41,6 +41,9 @@ public class NewWall extends AppCompatActivity {
                             long row_id = m.addMur(new Mur(0, push, room));
                             Mur push = m.getMurFromRowId(row_id);
                             m.close();
+                            MurManager m2 = new MurManager(getApplicationContext()); // gestionnaire de la table "user"
+                            m2.open();
+                            m2.close();
                             Intent intent = new Intent(getApplicationContext(), PushList.class);
                             intent.putExtra("push", push);
                             startActivity(intent);

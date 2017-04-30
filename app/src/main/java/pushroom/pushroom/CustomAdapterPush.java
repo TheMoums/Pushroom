@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import java.util.ArrayList;
     public class CustomAdapterPush extends BaseAdapter {
@@ -40,6 +41,8 @@ import java.util.ArrayList;
         private static class ViewHolder{
             public TextView name;
             private TextView numberOfPics;
+            public ImageButton red;
+            public  ImageButton green;
             //public ImageView image;
         }
 
@@ -47,7 +50,6 @@ import java.util.ArrayList;
         public View getView(int position, View convertView, ViewGroup parent) {
             View vi = convertView;
             ViewHolder holder;
-
             if(convertView==null){
 
                 // Inflate custom_row_xxx.xml file for each row ( Defined below )
@@ -57,6 +59,8 @@ import java.util.ArrayList;
                 holder = new ViewHolder();
                 holder.name = (TextView) vi.findViewById(R.id.custom_row_walls_name);
                 holder.numberOfPics=(TextView)vi.findViewById(R.id.custom_row_walls_number_of_pics);
+                holder.green = (ImageButton)vi.findViewById(R.id.green);
+                holder.red = (ImageButton)vi.findViewById(R.id.red);
                 //holder.image=(ImageView)vi.findViewById(R.id.image);
 
                 // Set holder with LayoutInflater
@@ -77,10 +81,10 @@ import java.util.ArrayList;
 
                 // Set Model values in Holder elements
                 holder.name.setText( tempValues.getMurName() );
-                holder.numberOfPics.setText( tempValues.getMurName());
-
+                holder.numberOfPics.setText( tempValues.getRoom());
                 // Set Item Click Listner for LayoutInflater for each row
-                vi.setOnClickListener(new OnItemClickListener( position ));
+                holder.red.setOnClickListener(new OnItemClickListener( position, "red" ));
+                holder.green.setOnClickListener(new OnItemClickListener( position, "green" ));
                 vi.setOnLongClickListener(new OnItemLongClickListener(position));
             }
             return vi;
@@ -89,9 +93,10 @@ import java.util.ArrayList;
         /** Called when Item click in ListView **/
         private class OnItemClickListener implements View.OnClickListener {
             private int mPosition;
+            private String color;
 
-            OnItemClickListener(int position){
-                mPosition = position;
+            OnItemClickListener(int position, String color){
+                mPosition = position; this.color=color;
             }
 
             @Override
@@ -99,7 +104,7 @@ import java.util.ArrayList;
                 pushroom.pushroom.PushList sct = (pushroom.pushroom.PushList) activity;
 
                 // Call  onItemClick Method inside CustomListViewAndroidExample Class ( See Below )
-                sct.onItemClick(mPosition);
+                sct.onItemClick(mPosition, color);
             }
         }
         private class OnItemLongClickListener implements View.OnLongClickListener {

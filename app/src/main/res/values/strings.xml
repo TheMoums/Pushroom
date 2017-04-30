@@ -50,6 +50,6 @@
     <string name="scale_factor">Scale factor</string>
     <string name="wallChoice">"What do you want to do?"</string>
     <string name="wallDelete">Delete</string>
-    <string name="wallDeleted">Wall deleted</string>
+    <string name="wallDeleted">Push deleted</string>
     <string name="wallModify">Modify</string>
 </resources>

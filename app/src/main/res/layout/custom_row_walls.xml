@@ -29,12 +29,24 @@
             android:textColor="@color/white"/>
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:id="@+id/custom_row_walls_next"
-        android:layout_alignParentEnd="true"
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id = "@+id/green"
+        android:background="@drawable/green"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_next"/>
+        android:layout_alignTop="@+id/red"
+        android:layout_toLeftOf="@+id/red"
+        android:layout_toStartOf="@+id/red" />
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/red"
+        android:background="@drawable/red"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

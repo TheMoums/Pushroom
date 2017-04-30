@@ -2,33 +2,38 @@ package pushroom.pushroom;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-/**
- * Created by henri on 29-04-17.
- */
+import java.util.ArrayList;
+import java.util.List;
 
 public class PushList extends AppCompatActivity{
-    /**
-     * Created by adrien on 21/03/17.
-     */
         ListView list;
         CustomAdapterPush adapter; //TODO
         public  PushList CustomListView = null; //TODO
         public ArrayList<Mur> dataArray = new ArrayList<>(); //TODO
-
+        String [] tabOfIp = {"10.120.33.247", "10.120.33.247", "10.120.33.247"};
+        int [] tabOfPort = {80, 80 , 80};
         @Override
         public boolean onCreateOptionsMenu(Menu menu) {
             MenuInflater inflater = getMenuInflater();
@@ -89,12 +94,25 @@ public class PushList extends AppCompatActivity{
         }
 
         /** Function used by adapter **/
-        public void onItemClick(int mPosition)
+        public void onItemClick(int mPosition, String color)
         {
             Mur tempValues = ( Mur ) dataArray.get(mPosition);
-            Intent intent = new Intent(this, Button.class);
+            WifiManager wifi = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+            if (wifi.isWifiEnabled()){
+                if(color.equals("green"))
+                    Send("push", "0", tabOfIp[0]);
+                else
+                    Send("close", "0", tabOfIp[0]);
+            }
+            else{
+                Toast.makeText(getApplicationContext(),R.string.wifiErr,Toast.LENGTH_LONG).show();
+            }
+            /*Intent intent = new Intent(this, Communication.class);
             intent.putExtra("mur", tempValues);
-            startActivity(intent);
+            intent.putExtra("Ip", tabOfIp[0]);
+            intent.putExtra("port", tabOfPort[0]);
+            intent.putExtra("action", "push");
+            startActivity(intent);*/
         }
         public void onItemLongClick(int mPosition)
         {
@@ -107,7 +125,7 @@ public class PushList extends AppCompatActivity{
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Light_Dialog));
             //Source of the data in the Dialog
             final Mur tempValues = (Mur) dataArray.get(mPosition);
-            CharSequence[] array = {getResources().getString(R.string.wallModify) + " " + tempValues.getMurName(), getResources().getString(R.string.wallDelete) + " " + tempValues.getMurName()};
+            CharSequence[] array = {"Check connection", getResources().getString(R.string.wallDelete) + " " + tempValues.getMurName()};
             // Set the dialog title
             builder.setTitle(getResources().getString(R.string.wallChoice)) //
                     // Specify the list array, the items to be selected by default (null for none),
@@ -123,7 +141,16 @@ public class PushList extends AppCompatActivity{
                         public void onClick(DialogInterface dialog, int id) {//if the user presses "Ok"
                             ListView lw = ((AlertDialog)dialog).getListView();
                             String checkedItem = (String) lw.getAdapter().getItem(lw.getCheckedItemPosition());//Marker chosen by the user
-                            if(checkedItem.equals(getResources().getString(R.string.wallDeleted) +" "+ tempValues.getMurName())){
+                            if(checkedItem.equals("Check connection")){
+                                WifiManager wifi = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                                if (wifi.isWifiEnabled()){
+                                    Send("check", "0", tabOfIp[0]);
+                                }
+                                else{
+                                    Toast.makeText(getApplicationContext(),R.string.wifiErr,Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            else{
                                 Toast.makeText(getBaseContext(), R.string.wallDeleted, Toast.LENGTH_SHORT).show();
                                 Mur mur1 = dataArray.get(mPosition);
                                 int murID = mur1.getMurId();
@@ -153,4 +180,52 @@ public class PushList extends AppCompatActivity{
             //super.onBackPressed();
             //rien
         }
+    private ProgressDialog pDialog;
+    JSONParser jsonParser = new JSONParser();
+    public void Send(String message, String number, String IP) {
+            new Create_Part(message, number, IP).execute();
     }
+    class Create_Part extends AsyncTask<String, String, String> {
+        String instruction;
+        String number;
+        String IP;
+        String response = "Push connection error";
+        public  Create_Part(String instruction, String number, String IP)
+        {
+            this.instruction = instruction;
+            this.number = number;
+            this.IP = IP;
+        }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(PushList.this);
+            pDialog.setMessage("Sending instruction to push");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+        @Override
+        protected String doInBackground(String... args) {
+            List<NameValuePair> params = new ArrayList<>();
+            params.add(new BasicNameValuePair("Name", instruction));
+            params.add(new BasicNameValuePair("part_nr", number));
+            String path = "http://"+IP+"/db_create.php";
+            JSONObject json = jsonParser.makeHttpRequest(path, "POST", params);//TODO adress IP
+            try {
+                int success = json.getInt("success");
+                if(success == 1){
+                    response = json.getString("message");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        protected void onPostExecute(String file_url){
+            Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+            pDialog.dismiss();
+        }
+    }
+}
